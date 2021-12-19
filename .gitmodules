@@ -1,3 +1,0 @@
-[submodule "external/renderer"]
-	path = external/renderer
-	url = git@github.com:ente-io/bada-frame.git
