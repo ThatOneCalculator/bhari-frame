@@ -1,7 +1,7 @@
 import { app, BrowserWindow, nativeImage } from 'electron';
 import * as isDev from 'electron-is-dev';
 import * as path from 'path';
-import { isAppQuitting } from '../main';
+import { isAppQuitting } from '..';
 
 export function createWindow(): BrowserWindow {
     const appImgPath = isDev
@@ -29,13 +29,13 @@ export function createWindow(): BrowserWindow {
     splash.maximize();
 
     if (isDev) {
-        splash.loadFile(`../build/splash.html`);
+        splash.loadFile(`../static/splash.html`);
         mainWindow.loadURL('http://localhost:3000');
         // Open the DevTools.
         mainWindow.webContents.openDevTools();
     } else {
         splash.loadURL(
-            `file://${path.join(process.resourcesPath, 'splash.html')}`
+            `file://${path.join(process.resourcesPath, 'splash.html')}`,
         );
         mainWindow.loadURL('http://web.ente.io');
     }
@@ -43,10 +43,10 @@ export function createWindow(): BrowserWindow {
         splash.close();
         mainWindow.show();
         isDev
-            ? mainWindow.loadFile(`../build/error.html`)
+            ? mainWindow.loadFile(`../static/error.html`)
             : splash.loadURL(
-                `file://${path.join(process.resourcesPath, 'error.html')}`
-            );
+                  `file://${path.join(process.resourcesPath, 'error.html')}`,
+              );
     });
     mainWindow.once('ready-to-show', () => {
         mainWindow.show();
@@ -56,12 +56,10 @@ export function createWindow(): BrowserWindow {
         if (!isAppQuitting()) {
             event.preventDefault();
             mainWindow.hide();
-            const isMac = process.platform === 'darwin'
+            const isMac = process.platform === 'darwin';
             isMac && app.dock.hide();
         }
         return false;
     });
     return mainWindow;
 }
-
-
